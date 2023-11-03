@@ -243,7 +243,7 @@ while file_num <= maxfile_num:
     if proto == 'icmp':
         with open("term%s" %file_num,'r') as file:
             for line in file:
-                if "icmp-type" in line:
+                if "icmp-type [" in line:
                     icmp_type=line.split('[')
                     icmp_type=icmp_type[1].split(']')
                     icmp_type=icmp_type[0].split(' ')
@@ -251,6 +251,10 @@ while file_num <= maxfile_num:
                     icmp_type=icmp_type[+1:]
                     for i in icmp_type:
                         print('ipv4 access-list ACLv4-INBOUND',action,proto,src_add_obj,dst_add_obj,i)
+                elif "icmp-type" in line:
+                    icmp_type = line.split()
+                    icmp_type = icmp_type[1]
+                    print('ipv4 access-list GEN-ACL-INBOUND',action,proto,src_add_obj,dst_add_obj,icmp_type[0])
 
     if proto == 'tcp':
         with open("term%s" %file_num,'r') as file:
